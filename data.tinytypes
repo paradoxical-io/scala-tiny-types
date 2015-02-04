@@ -1,0 +1,4 @@
+foo, String
+bar, String
+bizBaz, Int
+Data, java.util.UUID
