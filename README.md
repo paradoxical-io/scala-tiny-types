@@ -18,4 +18,37 @@ Then give it the path to the defintions file (which is just a comma sepearated c
 and the output package type of the form "com.foo.bar".  It will write two files into "src/main/scala/com/foo/bar" being the case class tiny 
 definitions as well as the implicit conversions.
 
+## Example
+
+As an example, given the following input file
+
+```
+foo, String
+bar, String
+bizBaz, Int
+Data, java.util.UUID
+```
+
+And using the package `com.devshorts.data` we'll get 
+
+```scala
+package com.devshorts.data
+
+case class foo(data : String)
+case class bar(data : String)
+case class bizBaz(data : Int)
+case class Data(data : java.util.UUID)
+```
+
+```scala
+package com.devshorts.data
+
+object Conversions{
+    implicit def convertfoo(i : foo) : String = i match { case foo(data) => data }
+    implicit def convertbar(i : bar) : String = i match { case bar(data) => data }
+    implicit def convertbizBaz(i : bizBaz) : Int = i match { case bizBaz(data) => data }
+    implicit def convertData(i : Data) : java.util.UUID = i match { case Data(data) => data }
+}
+```
+
 

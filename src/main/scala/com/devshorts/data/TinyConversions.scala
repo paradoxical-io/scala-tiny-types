@@ -1,3 +1,5 @@
+package com.devshorts.data
+
 object Conversions{
     implicit def convertfoo(i : foo) : String = i match { case foo(data) => data }
     implicit def convertbar(i : bar) : String = i match { case bar(data) => data }

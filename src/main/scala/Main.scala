@@ -54,7 +54,9 @@ object Main extends App {
 
     val writer = new BufferedWriter(new FileWriter(f))
 
-    writer.write(content)
+    writer.write(s"""package $packageName
+
+$content""")
 
     writer.close()
   }
