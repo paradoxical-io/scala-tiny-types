@@ -7,7 +7,7 @@ object TinyMaker {
       case TinyTypeDefinition(tinyName, typeName) =>
 
         val definition = s"case class $tinyName(data : $typeName)"
-        val conversion = s"implicit def convert${tinyName}(i : $tinyName) : $typeName = i match { case $tinyName(data) => data }"
+        val conversion = s"implicit def convert${tinyName}(i : $tinyName) : $typeName = i.data"
 
         TinyAggregate(definition, conversion)
     }

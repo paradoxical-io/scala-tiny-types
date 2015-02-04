@@ -1,70 +1,42 @@
-import java.io.{BufferedWriter, File, FileWriter}
+import java.io.File
 
-import scala.io.{Codec, Source}
-
+case class Config(definitionsFile: String = null,
+                  outputPackage: String = null,
+                  rootFolder: Option[String] = Some(new File(".").getCanonicalPath + "/src/main/scala/"))
 
 object Main extends App {
-  def run(): Unit = {
-    if (args.length < 2) {
-      println("[tiny types definition file] [output package name]")
+  val parser = new scopt.OptionParser[Config]("tiny-types") {
+    head("tiny-types", "1.0")
+    opt[String]('d', "definitionsFile") required() action {
+      (value, config) => config copy (definitionsFile = value)
+    } text "The comma separated definitions file"
 
-      return
+    opt[String]('o', "outputPackage") required() action {
+      (value, config) => config copy (outputPackage = value)
+    } text "The target ouput package of the format a.b.c.d"
+
+    opt[String]('r', "rootFolder") optional() action {
+      (value, config) => config copy (rootFolder = Some(value))
+    } text "Optional root folder. If not supplied current folder will be used"
+
+    note("""
+
+Tiny types generate case classes of the form
+
+    case class Foo(wrapped : Type)
+
+Along with a 'dereferencer' type
+
+     object Conversions{
+         implicit def convertType(f : Foo) : Type = f.data
+     }""")
+  }
+
+  parser.parse(args, Config()) match {
+    case Some(c) => {
+      println(s"Using $c")
+      new Runner(c).run()
     }
-
-
-    val tinyTypeDefFile = args(0)
-
-    val outputPackage = args(1)
-
-    println(s"using $tinyTypeDefFile, $outputPackage")
-
-    val (templatedTypes, templatedConversions) =
-      readFile(tinyTypeDefFile)
-        .map(x => { println(s"Processing $x"); x })
-        .map(x => TinyMaker(x))
-        .map({ case TinyAggregate(declaration, conversion) => (declaration, conversion)})
-        .unzip
-
-    val tinyTemplates = templatedTypes.mkString(System.lineSeparator())
-
-    val tinyConversions = withObjectConversions(templatedConversions.mkString(System.lineSeparator()))
-
-    writeAsPackage(outputPackage, tinyTemplates, "TinyTypes.scala")
-    writeAsPackage(outputPackage, tinyConversions, "TinyConversions.scala")
-
-    println("DONE!")
+    case None => ()
   }
-
-  def readFile(path: String): Seq[TinyTypeDefinition] = {
-    val s = Source.fromFile(path)(Codec.UTF8)
-
-    s.getLines().map(x => TinyTypeDefinition(x)).toSeq
-  }
-
-  def writeAsPackage(packageName: String, content: String, fileName: String): Unit = {
-    val dir = s"src/main/scala/${packageName.replace('.', '/')}"
-
-    val f = new File(s"$dir/$fileName")
-
-    if (!f.getParentFile.exists()) {
-      f.getParentFile.mkdirs()
-    }
-
-    val writer = new BufferedWriter(new FileWriter(f))
-
-    writer.write(s"""package $packageName
-
-$content""")
-
-    writer.close()
-  }
-
-  def withObjectConversions(content: String) = {
-    s"""
-object Conversions{
-${content.split(System.lineSeparator()).map(i => "    " + i.trim).mkString(System.lineSeparator())}
-}""".trim
-  }
-
-  run()
 }
