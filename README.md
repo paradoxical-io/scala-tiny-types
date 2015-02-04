@@ -44,11 +44,29 @@ case class Data(data : java.util.UUID)
 package com.devshorts.data
 
 object Conversions{
-    implicit def convertfoo(i : foo) : String = i match { case foo(data) => data }
-    implicit def convertbar(i : bar) : String = i match { case bar(data) => data }
-    implicit def convertbizBaz(i : bizBaz) : Int = i match { case bizBaz(data) => data }
-    implicit def convertData(i : Data) : java.util.UUID = i match { case Data(data) => data }
+    implicit def convertfoo(i : foo) : String = i.data
+    implicit def convertbar(i : bar) : String = i.data
+    implicit def convertbizBaz(i : bizBaz) : Int = i.data
+    implicit def convertData(i : Data) : java.util.UUID = i.data
 }
 ```
+
+## Zsh completion
+
+```zsh
+#compdef tiny-types
+
+local arguments
+
+arguments=(
+'-d[Comma separated tiny types descriptor]:descriptor file:_files'
+'-o[Package name]:package name:'
+'-r[Optional root folder]:root folder:_path_files'
+)
+
+_arguments -s $arguments
+```
+
+Drop this into your zsh functions folder as `_tiny-types` and you're good to go~
 
 
