@@ -20,9 +20,7 @@ object Main extends App {
 
     val (templatedTypes, templatedConversions) =
       readFile(tinyTypeDefFile)
-        .map(x => {
-        println(s"Processing $x"); x
-      })
+        .map(x => { println(s"Processing $x"); x })
         .map(x => TinyMaker(x))
         .map({ case TinyAggregate(declaration, conversion) => (declaration, conversion)})
         .unzip
