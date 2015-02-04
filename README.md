@@ -51,6 +51,16 @@ object Conversions{
 }
 ```
 
+## Execution
+
+Here is a simple wrapper to drop into your bin folder
+
+```
+#!/bin/bash
+
+java -jar ~/bin/tiny-types-assembly-1.0.jar "$@"
+```
+
 ## Zsh completion
 
 ```zsh
