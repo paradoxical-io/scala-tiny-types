@@ -1,8 +1,6 @@
-import java.io.File
+package com.devshorts
 
-case class Config(definitionsFile: String = null,
-                  outputPackage: String = null,
-                  rootFolder: Option[String] = Some(new File(".").getCanonicalPath + "/src/main/scala/"))
+import com.devshorts.traits.LiveReader
 
 object Main extends App {
   val parser = new scopt.OptionParser[Config]("tiny-types") {
@@ -16,7 +14,7 @@ object Main extends App {
     } text "The target ouput package of the format a.b.c.d"
 
     opt[String]('r', "rootFolder") optional() action {
-      (value, config) => config copy (rootFolder = Some(value))
+      (value, config) => config copy (rootFolder = value)
     } text "Optional root folder. If not supplied current folder will be used"
 
     note("""
@@ -35,7 +33,9 @@ Along with a 'dereferencer' type
   parser.parse(args, Config()) match {
     case Some(c) => {
       println(s"Using $c")
-      new Runner(c).run()
+
+      new Runner(c)
+          with LiveReader run()
     }
     case None => ()
   }
