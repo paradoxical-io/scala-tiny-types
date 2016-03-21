@@ -64,7 +64,7 @@ tableId, java.util.UUID
 
 And using the package `com.devshorts.data.typetag2` we'll get
 
-```
+```scala
 package com.devshorts.data.typetag2
 
 
@@ -109,7 +109,7 @@ object TagTypes {
 
 Which can be used now:
 
-```
+```scala
 class UseTypes {
   import com.devshorts.data.typetag2.TinyTypes._
   
