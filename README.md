@@ -1,10 +1,6 @@
 # scala-tiny-types
 
-This is a small console app to create scala based "tiny types". All this means is it'll auto generate case classes
-and a "Conversions" object with a bunch of implicit functions to "dereference" the item.
-
-Right now it only does scala types but it's structured in a way that it's easy to add other languages to generate (for example
-C# which has a lot more boilerplate in creating struct based value wrappers)
+This is a small console app to create scala based "tiny types". 
 
 Why tiny types? This way you pay no penalty in adding more domain specific information to your project. For example,
 a first name isn't the same as a last name. And your address isn't the same as your age, so why would you represent them the same?
@@ -14,6 +10,24 @@ To install run the install script.
 Run `tiny-types` and give it the path to the defintions file (which is just a comma sepearated case class name followed by target type (Fully qualified)),
 and the output package type of the form "com.foo.bar".  It will write two files into "src/main/scala/com/foo/bar" being the case class tiny 
 definitions as well as the implicit conversions.
+
+## Usage
+
+```
+tiny-types 1.0
+Usage: tiny-types [options]
+
+  -d <value> | --definitionsFile <value>
+        The comma separated definitions file
+  -o <value> | --outputPackage <value>
+        The target output package of the format a.b.c.d
+  -c <value> | --className <value>
+        The class and file name to generate. Default is TinyTypes
+  -t <value> | --formatType <value>
+        The format type to create the types in. Options are: CaseClass, TypeTag. Default is CaseClass
+  -r <value> | --rootFolder <value>
+        Optional root folder. If not supplied current folder will be used
+```        
 
 ## TypeTagging vs Case Classes
 
