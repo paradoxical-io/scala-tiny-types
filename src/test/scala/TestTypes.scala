@@ -1,16 +1,31 @@
-import com.devshorts.makers.ScalaMaker
-import com.devshorts.traits.Output
 import com.devshorts.Config
 import com.devshorts.data.bar
-import org.scalatest.{FlatSpec, Matchers}
+import com.devshorts.makers.CaseClassMaker
 import com.devshorts.parsers.Implicits._
+import com.devshorts.traits.Output
+import org.scalatest.{FlatSpec, Matchers}
+
 import scala.collection.mutable
+
+/**
+  * Tests only for compilation
+  */
+class UseTypes {
+  import com.devshorts.data.typetag2.TinyTypes._
+
+  val implicitConvertsToType: funId = 1
+
+  def sendPrimitiveToTypeAlias = passPrimitiveToTypeAlias(1)
+  def sendTypeAliasToTypeAlias = passPrimitiveToTypeAlias(implicitConvertsToType)
+
+  def passPrimitiveToTypeAlias(p : funId) = p
+}
 
 class TestTypes extends FlatSpec with Matchers {
   "A tiny type" should "be convertable" in {
     import com.devshorts.data.Conversions._
 
-    val tinyBar = bar("foo")
+    val tinyBar: bar = bar("foo")
 
     def takesString(s: String): String = s
 
@@ -31,8 +46,8 @@ class TestTypes extends FlatSpec with Matchers {
 
     val t = "foo, Bar".toTinyType
 
-    t.tinyName should be ("foo")
-    t.typeName should be ("Bar")
+    t.tinyName should be("foo")
+    t.typeName should be("Bar")
   }
 
   "Reading" should "read" in {
@@ -42,7 +57,7 @@ class TestTypes extends FlatSpec with Matchers {
 
     val tinyDef = "foo, Bar"
 
-    val scalaMaker = new ScalaMaker(config, Seq(tinyDef.toTinyType)) {
+    val scalaMaker = new CaseClassMaker(config, Seq(tinyDef.toTinyType)) {
       override def getOutputProvider(): Output = new Output {
         override def write(content: String, fileName: String): Unit = {
           _content += content
@@ -52,7 +67,7 @@ class TestTypes extends FlatSpec with Matchers {
 
     scalaMaker make() write()
 
-    _content(0) should equal (ScalaMaker.process(tinyDef.toTinyType)._1)
-    _content(1).contains("implicit def convertfoo(i : foo) : Bar = i.data") should be (true)
+    _content(0) should equal(CaseClassMaker.process(tinyDef.toTinyType).caseClass)
+    _content(1).contains("implicit def convertfoo(i : foo) : Bar = i.data") should be(true)
   }
 }
