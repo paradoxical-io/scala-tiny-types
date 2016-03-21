@@ -17,24 +17,11 @@ object Main extends App {
 
     opt[TypeAliasType.Value]('t', "formatType") optional() action {
       (value, config) => config copy (creationType = value)
-    } text "The format type to create the types in"
+    } text "The format type to create the types in. Options are: CaseClass, TypeTag. Default is CaseClass"
 
     opt[String]('r', "rootFolder") optional() action {
       (value, config) => config copy (rootFolder = value)
     } text "Optional root folder. If not supplied current folder will be used"
-
-    note(
-          """
-
-Tiny types generate case classes of the form
-
-    case class Foo(wrapped : Type)
-
-Along with a 'dereferencer' type
-
-     object Conversions{
-         implicit def convertType(f : Foo) : Type = f.data
-     }""")
   }
 
   parser.parse(args, Config()) match {
