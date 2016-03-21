@@ -1,0 +1,22 @@
+[
+  {
+    "package": "com.devshorts.data",
+    "folder": "src/test/scala",
+    "tiny": {
+      "bar": "String",
+      "foo": "String",
+      "bizBaz": "Int",
+      "Data" : "java.util.UUID"
+    }
+  },
+  {
+    "package": "com.devshorts.data.typetag2",
+    "folder": "src/test/scala",
+    "format": "TypeTag",
+    "tiny": {
+      "workId": "String",
+      "funId": "Int",
+      "tableId": "java.util.UUID"
+    }
+  }
+]

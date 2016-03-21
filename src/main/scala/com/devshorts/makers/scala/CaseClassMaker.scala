@@ -1,12 +1,10 @@
 package com.devshorts.makers.scala
 
 import com.devshorts._
-import com.devshorts.parsers.TinyTypeDefinition
 import com.devshorts.traits._
 
 
-
-case class ParsedTinyType(caseClass : String, conversion : String)
+case class ParsedTinyType(caseClass: String, conversion: String)
 
 object CaseClassMaker {
   def process(d: TinyTypeDefinition): ParsedTinyType = {
@@ -21,12 +19,12 @@ object CaseClassMaker {
   }
 }
 
-abstract class CaseClassMaker(config: Config, definitions: Seq[TinyTypeDefinition]) extends TinyMaker with OutputProvider {
+abstract class CaseClassMaker(config: TypeGroup) extends TinyMaker with OutputProvider {
 
   def getWriter(): Writer = {
-    val parsed : Seq[ParsedTinyType] = definitions.map(CaseClassMaker.process)
+    val parsed: Seq[ParsedTinyType] = config.types.map(CaseClassMaker.process)
 
-    val tinyTemplates =  parsed.map(_.caseClass).mkString(System.lineSeparator())
+    val tinyTemplates = parsed.map(_.caseClass).mkString(System.lineSeparator())
 
     val tinyConversions = withObjectConversions(parsed.map(_.conversion).mkString(System.lineSeparator()))
 
@@ -34,8 +32,11 @@ abstract class CaseClassMaker(config: Config, definitions: Seq[TinyTypeDefinitio
       override def write(): Unit = {
         val writer = getOutputProvider()
 
-        writer.write(tinyTemplates, s"${config.className}.scala")
-        writer.write(tinyConversions, s"${config.className}Conversions.scala")
+        writer.write(s"""
+$tinyTemplates
+
+$tinyConversions
+          """.trim, s"${config.className}.scala")
       }
     }
   }

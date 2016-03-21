@@ -18,15 +18,7 @@ tiny-types 1.0
 Usage: tiny-types [options]
 
   -d <value> | --definitionsFile <value>
-        The comma separated definitions file
-  -o <value> | --outputPackage <value>
-        The target output package of the format a.b.c.d
-  -c <value> | --className <value>
-        The class and file name to generate. Default is TinyTypes
-  -t <value> | --formatType <value>
-        The format type to create the types in. Options are: CaseClass, TypeTag. Default is CaseClass
-  -r <value> | --rootFolder <value>
-        Optional root folder. If not supplied current folder will be used
+        The json definitions file
 ```        
 
 ## TypeTagging vs Case Classes
@@ -40,13 +32,21 @@ Type tags are inspired by this blog post: https://coderwall.com/p/l-plmq/adding-
 As an example, given the following input file
 
 ```
-foo, String
-bar, String
-bizBaz, Int
-Data, java.util.UUID
+[
+  {
+    "package": "com.devshorts.data",
+    "folder": "src/test/scala",
+    "tiny": {
+      "bar": "String",
+      "foo": "String",
+      "bizBaz": "Int",
+      "Data" : "java.util.UUID"
+    }
+  }
+]
 ```
 
-And using the package `com.devshorts.data` we'll get 
+We'll get 
 
 ```scala
 package com.devshorts.data
@@ -73,12 +73,21 @@ object Conversions{
 With the following input file
 
 ```
-workId, String
-funId, Int
-tableId, java.util.UUID
+[
+  {
+    "package": "com.devshorts.data.typetag2",
+    "folder": "src/test/scala",
+    "format": "TypeTag",
+    "tiny": {
+      "workId": "String",
+      "funId": "Int",
+      "tableId": "java.util.UUID"
+    }
+  }
+]
 ```
 
-And using the package `com.devshorts.data.typetag2` we'll get
+We'll get
 
 ```scala
 package com.devshorts.data.typetag2
@@ -146,10 +155,7 @@ class UseTypes {
 local arguments
 
 arguments=(
-'-d[Comma separated tiny types descriptor]:descriptor file:_files'
-'-o[Package name]:package name:'
-'-r[Optional root folder]:root folder:_path_files'
-'-t[Optional type to generate]:type:(CaseClass TypeTag)
+'-d[Json tiny types descriptor]:descriptor file:_files'
 )
 
 _arguments -s $arguments

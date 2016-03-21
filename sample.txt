@@ -1,3 +1,0 @@
-workId, String
-funId, Int
-tableId, java.util.UUID

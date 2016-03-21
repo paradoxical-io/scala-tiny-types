@@ -1,25 +1,24 @@
 package com.devshorts.providers
 
 import com.devshorts.makers.scala.{CaseClassMaker, TypeTagMaker}
-import com.devshorts.parsers.TinyTypeDefinition
 import com.devshorts.traits.{Output, ScalaPackageWriter, TinyMaker, TinyProvider}
-import com.devshorts.{Config, TypeAliasType}
+import com.devshorts.{Config, TypeAliasType, TypeGroup}
 
-class ScalaProvider(definitions: Seq[TinyTypeDefinition], config: Config) extends TinyProvider {
+class ScalaProvider(config: TypeGroup) extends TinyProvider {
 
   def tinyMaker: TinyMaker = {
     val packageWriter = new ScalaPackageWriter {
-      override val folder     : String = config.rootFolder
-      override val packageName: String = config.outputPackage
+      override val folder     : String = config.folder
+      override val packageName: String = config.packageName
     }
 
     config.creationType match {
       case TypeAliasType.CaseClass =>
-        new CaseClassMaker(config, definitions) {
+        new CaseClassMaker(config) {
           override def getOutputProvider(): Output = packageWriter
         }
       case TypeAliasType.TypeTag   =>
-        new TypeTagMaker(config, definitions) {
+        new TypeTagMaker(config) {
           override def getOutputProvider(): Output = packageWriter
         }
     }
@@ -27,7 +26,7 @@ class ScalaProvider(definitions: Seq[TinyTypeDefinition], config: Config) extend
 }
 
 object MakerProvider {
-  def apply(definitions: Seq[TinyTypeDefinition], config : Config) : TinyMaker = {
-    new ScalaProvider(definitions, config).tinyMaker
+  def apply(config : TypeGroup) : TinyMaker = {
+    new ScalaProvider(config).tinyMaker
   }
 }

@@ -1,11 +1,10 @@
 package com.devshorts.makers.scala
 
-import com.devshorts.Config
-import com.devshorts.parsers.TinyTypeDefinition
 import com.devshorts.traits.{Output, OutputProvider, TinyMaker, Writer}
+import com.devshorts.{TinyTypeDefinition, TypeGroup}
 
-abstract class TypeTagMaker(config: Config, definitions: Seq[TinyTypeDefinition]) extends TinyMaker with OutputProvider {
-  private def toTemplate(definition: TinyTypeDefinition) : String = {
+abstract class TypeTagMaker(config: TypeGroup) extends TinyMaker with OutputProvider {
+  private def toTemplate(definition: TinyTypeDefinition): String = {
     s"""
   /* Tiny type definition for ${definition.tinyName} */
 
@@ -17,13 +16,13 @@ abstract class TypeTagMaker(config: Config, definitions: Seq[TinyTypeDefinition]
 """.stripMargin
   }
 
-  private def camelCase(s : String) = s.charAt(0).toString.toLowerCase + s.substring(1, s.length)
+  private def camelCase(s: String) = s.charAt(0).toString.toLowerCase + s.substring(1, s.length)
 
   override def getWriter(): Writer = new Writer {
     override def write(): Unit = {
       val provider: Output = getOutputProvider()
 
-      val types : String = definitions.map(toTemplate).mkString(System.lineSeparator()).trim
+      val types: String = config.types.map(toTemplate).mkString(System.lineSeparator()).trim
 
       val body =
         s"""
