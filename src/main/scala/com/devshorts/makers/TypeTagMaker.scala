@@ -10,41 +10,32 @@ abstract class TypeTagMaker(config: Config, definitions: Seq[TinyTypeDefinition]
   /* Tiny type definition for ${definition.tinyName} */
 
   trait Tiny${definition.tinyName}
-  type ${definition.tinyName} = ${definition.typeName} @@ Tiny${definition.tinyName}
-  implicit def ${camelCase(definition.tinyName)}(rawType : ${definition.typeName}) : ${definition.tinyName} =
-    rawType.asInstanceOf[${definition.tinyName}]
 
-    """.stripMargin
+  type ${definition.tinyName} = ${definition.typeName} @@ Tiny${definition.tinyName}
+
+  implicit def ${camelCase(definition.tinyName)}(rawType : ${definition.typeName}) : ${definition.tinyName} = rawType.asInstanceOf[${definition.tinyName}]
+""".stripMargin
   }
 
   private def camelCase(s : String) = s.charAt(0).toString.toLowerCase + s.substring(1, s.length)
 
-  private def typeTagDefinition() : String = {
-    """
-object TagTypes {
-    type Tagged[U] = { type Tag = U }
-    type @@[T, U] = T with Tagged[U]
-}
-    """.stripMargin
-  }
   override def make(): Writer = new Writer {
     override def write(): Unit = {
       val provider: Output = getOutputProvider()
 
-      val types : String = definitions.map(toTemplate).mkString(System.lineSeparator())
+      val types : String = definitions.map(toTemplate).mkString(System.lineSeparator()).trim
 
       val body =
         s"""
-import TagTypes.@@
+object ${config.className} {
+  type Tagged[U] = { type Tag = U }
+  type @@[T, U] = T with Tagged[U]
 
-object TinyTypes {
-   $types
+$types
 }
+        """.trim
 
-${typeTagDefinition()}
-        """.stripMargin
-
-      provider.write(body, "TinyTypes.scala")
+      provider.write(body, s"${config.className}.scala")
     }
   }
 }

@@ -15,6 +15,10 @@ object Main extends App {
       (value, config) => config copy (outputPackage = value)
     } text "The target output package of the format a.b.c.d"
 
+    opt[String]('c', "className") required() action {
+      (value, config) => config copy (className = value)
+    } text "The class and file name to generate. Default is TinyTypes"
+
     opt[TypeAliasType.Value]('t', "formatType") optional() action {
       (value, config) => config copy (creationType = value)
     } text "The format type to create the types in. Options are: CaseClass, TypeTag. Default is CaseClass"

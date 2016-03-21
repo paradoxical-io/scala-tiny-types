@@ -23,7 +23,7 @@ object CaseClassMaker {
   }
 }
 
-abstract class CaseClassMaker(c: Config, definitions: Seq[TinyTypeDefinition]) extends TinyMaker with OutputProvider {
+abstract class CaseClassMaker(config: Config, definitions: Seq[TinyTypeDefinition]) extends TinyMaker with OutputProvider {
 
   def make(): Writer = {
     val parsed : Seq[ParsedTinyType] = definitions.map(CaseClassMaker.process)
@@ -36,8 +36,8 @@ abstract class CaseClassMaker(c: Config, definitions: Seq[TinyTypeDefinition]) e
       override def write(): Unit = {
         val writer = getOutputProvider()
 
-        writer.write(tinyTemplates, "TinyTypes.scala")
-        writer.write(tinyConversions, "TinyConversions.scala")
+        writer.write(tinyTemplates, s"${config.className}.scala")
+        writer.write(tinyConversions, s"${config.className}Conversions.scala")
       }
     }
   }

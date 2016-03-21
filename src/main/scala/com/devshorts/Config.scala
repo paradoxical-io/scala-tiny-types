@@ -9,4 +9,5 @@ object TypeAliasType extends Enumeration {
 case class Config(definitionsFile: String = null,
                   outputPackage: String = null,
                   rootFolder: String = new File(".").getCanonicalPath + "/src/main/scala/",
-                  creationType : TypeAliasType.Value = TypeAliasType.CaseClass)
+                  creationType : TypeAliasType.Value = TypeAliasType.CaseClass,
+                  className : String = "TinyTypes")
