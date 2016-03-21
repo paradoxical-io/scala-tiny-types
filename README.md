@@ -19,6 +19,8 @@ definitions as well as the implicit conversions.
 
 There are two camps of tiny type aliasing, one is case class wrapping (which is the default) and the other is type tagging.
 
+Type tags are inspired by this blog post: https://coderwall.com/p/l-plmq/adding-semantic-to-base-types-parameters-in-scala
+
 ## Example case classes
 
 As an example, given the following input file
