@@ -1,12 +1,12 @@
 package com.devshorts.parsers
 
-import com.devshorts.Definer
+import com.devshorts.ConfigCreateProvider
 
 
 case class TinyTypeDefinition(tinyName : String, typeName : String)
 
 class StringExt(s : String) {
-  def toTinyType() = TinyTypeParser(s)
+  def toTinyType = TinyTypeParser(s)
 }
 
 object Implicits {
@@ -14,10 +14,10 @@ object Implicits {
 }
 
 object TinyBuilder {
-  def apply(s : Seq[String]) : Definer = {
+  def apply(s : Seq[String]) : ConfigCreateProvider = {
     import com.devshorts.parsers.Implicits._
 
-    new Definer(s.map(_.toTinyType))
+    new ConfigCreateProvider(s.map(_.toTinyType))
   }
 }
 
