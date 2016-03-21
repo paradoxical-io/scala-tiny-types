@@ -1,6 +1,7 @@
 package com.devshorts
 
 import com.devshorts.parsers.{TinyTypeDefinition, TinyTypeParser}
+import com.devshorts.providers.MakerProvider
 import com.devshorts.traits.Input
 
 abstract class Runner(config: Config) extends Input {
@@ -15,7 +16,7 @@ abstract class Runner(config: Config) extends Input {
                         x
                       })
 
-    ConfigCreateProvider(definitions) asScala config make() write()
+    MakerProvider(definitions, config) getWriter() write()
 
     println("DONE!")
   }

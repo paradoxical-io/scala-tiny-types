@@ -1,6 +1,4 @@
-package com.devshorts.makers
-
-import java.io.{BufferedWriter, File, FileWriter}
+package com.devshorts.makers.scala
 
 import com.devshorts._
 import com.devshorts.parsers.TinyTypeDefinition
@@ -25,7 +23,7 @@ object CaseClassMaker {
 
 abstract class CaseClassMaker(config: Config, definitions: Seq[TinyTypeDefinition]) extends TinyMaker with OutputProvider {
 
-  def make(): Writer = {
+  def getWriter(): Writer = {
     val parsed : Seq[ParsedTinyType] = definitions.map(CaseClassMaker.process)
 
     val tinyTemplates =  parsed.map(_.caseClass).mkString(System.lineSeparator())

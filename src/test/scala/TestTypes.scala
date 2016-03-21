@@ -1,6 +1,6 @@
 import com.devshorts.Config
 import com.devshorts.data.bar
-import com.devshorts.makers.CaseClassMaker
+import com.devshorts.makers.scala.CaseClassMaker
 import com.devshorts.parsers.Implicits._
 import com.devshorts.traits.Output
 import org.scalatest.{FlatSpec, Matchers}
@@ -65,7 +65,7 @@ class TestTypes extends FlatSpec with Matchers {
       }
     }
 
-    scalaMaker make() write()
+    scalaMaker getWriter() write()
 
     _content(0) should equal(CaseClassMaker.process(tinyDef.toTinyType).caseClass)
     _content(1).contains("implicit def convertfoo(i : foo) : Bar = i.data") should be(true)

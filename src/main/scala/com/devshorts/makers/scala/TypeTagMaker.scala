@@ -1,4 +1,4 @@
-package com.devshorts.makers
+package com.devshorts.makers.scala
 
 import com.devshorts.Config
 import com.devshorts.parsers.TinyTypeDefinition
@@ -19,7 +19,7 @@ abstract class TypeTagMaker(config: Config, definitions: Seq[TinyTypeDefinition]
 
   private def camelCase(s : String) = s.charAt(0).toString.toLowerCase + s.substring(1, s.length)
 
-  override def make(): Writer = new Writer {
+  override def getWriter(): Writer = new Writer {
     override def write(): Unit = {
       val provider: Output = getOutputProvider()
 

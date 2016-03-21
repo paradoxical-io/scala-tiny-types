@@ -15,7 +15,7 @@ object Main extends App {
       (value, config) => config copy (outputPackage = value)
     } text "The target output package of the format a.b.c.d"
 
-    opt[String]('c', "className") required() action {
+    opt[String]('c', "className") optional() action {
       (value, config) => config copy (className = value)
     } text "The class and file name to generate. Default is TinyTypes"
 

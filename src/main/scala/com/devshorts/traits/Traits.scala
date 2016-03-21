@@ -13,7 +13,15 @@ trait WriteProvider {
 }
 
 trait TinyMaker {
-  def make(): Writer
+  def getWriter(): Writer
+
+  def complete() = {
+    getWriter() write()
+  }
+}
+
+trait TinyProvider {
+  def tinyMaker : TinyMaker
 }
 
 trait LiveReader extends Input {
