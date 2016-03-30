@@ -160,3 +160,4 @@ _arguments -s $arguments
 Drop this into your zsh functions folder as `_tiny-types` and you're good to go!
 
 
+ 
