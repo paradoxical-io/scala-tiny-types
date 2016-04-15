@@ -2,31 +2,20 @@ package com.devshorts.data.typetag2
 
 object TinyType {
   type Tagged[U] = { type Tag = U }
-  type @@[T, U] = T with Tagged[U]
+  
+  trait TinyWorkId
+  type workId = String with Tagged[TinyWorkId]
+  def WorkId(rawType: String): workId = rawType.asInstanceOf[workId]
 
-/* Tiny type definition for workId */
+  trait TinyFunId
+  type funId = Int with Tagged[TinyFunId]
+  def FunId(rawType: Int): funId = rawType.asInstanceOf[funId]
 
-  trait TinyworkId
+  trait TinyBarId
+  type barId = Int with Tagged[TinyBarId]
+  def BarId(rawType: Int): barId = rawType.asInstanceOf[barId]
 
-  type workId = String @@ TinyworkId
-
-  implicit def workId(rawType : String) : workId = rawType.asInstanceOf[workId]
-
-
-  /* Tiny type definition for funId */
-
-  trait TinyfunId
-
-  type funId = Int @@ TinyfunId
-
-  implicit def funId(rawType : Int) : funId = rawType.asInstanceOf[funId]
-
-
-  /* Tiny type definition for tableId */
-
-  trait TinytableId
-
-  type tableId = java.util.UUID @@ TinytableId
-
-  implicit def tableId(rawType : java.util.UUID) : tableId = rawType.asInstanceOf[tableId]
+  trait TinyTableId
+  type tableId = java.util.UUID with Tagged[TinyTableId]
+  def TableId(rawType: java.util.UUID): tableId = rawType.asInstanceOf[tableId]
 }

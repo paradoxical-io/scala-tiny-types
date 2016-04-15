@@ -77,6 +77,7 @@ With the following input file
     "tiny": {
       "workId": "String",
       "funId": "Int",
+      "barId": "Int",
       "tableId": "java.util.UUID"
     }
   }
@@ -87,60 +88,40 @@ We'll get
 
 ```scala
 package com.devshorts.data.typetag2
+object TinyType {
+  type Tagged[U] = { type Tag = U }
 
+  trait TinyWorkId
+  type workId = String with Tagged[TinyWorkId]
+  def WorkId(rawType: String): workId = rawType.asInstanceOf[workId]
 
-import TagTypes.@@
+  trait TinyFunId
+  type funId = Int with Tagged[TinyFunId]
+  def FunId(rawType: Int): funId = rawType.asInstanceOf[funId]
 
-object TinyTypes {
-   
-  /* Tiny type definition for workId */
+  trait TinyBarId
+  type barId = Int with Tagged[TinyBarId]
+  def BarId(rawType: Int): barId = rawType.asInstanceOf[barId]
 
-  trait TinyworkId
-  type workId = String @@ TinyworkId
-  implicit def workId(rawType : String) : workId =
-    rawType.asInstanceOf[workId]
-
-    
-
-  /* Tiny type definition for funId */
-
-  trait TinyfunId
-  type funId = Int @@ TinyfunId
-  implicit def toFunId(rawType : Int) : funId =
-    rawType.asInstanceOf[funId]
-
-    
-
-  /* Tiny type definition for tableId */
-
-  trait TinytableId
-  type tableId = java.util.UUID @@ TinytableId
-  implicit def tableId(rawType : java.util.UUID) : tableId =
-    rawType.asInstanceOf[tableId]
-
-    
-}
-
-
-object TagTypes {
-    type Tagged[U] = { type Tag = U }
-    type @@[T, U] = T with Tagged[U]
+  trait TinyTableId
+  type tableId = java.util.UUID with Tagged[TinyTableId]
+  def TableId(rawType: java.util.UUID): tableId = rawType.asInstanceOf[tableId]
 }
 ```
 
 Which can be used now:
 
 ```scala
-class UseTypes {
-  import com.devshorts.data.typetag2.TinyTypes._
-  
-  val implicitConvertsToType: funId = 1
+import com.devshorts.data.typetag2.TinyType._
 
-  def sendPrimitiveToTypeAlias = passPrimitiveToTypeAlias(1)
-  def sendTypeAliasToTypeAlias = passPrimitiveToTypeAlias(implicitConvertsToType)
+val funId: funId = FunId(1)
+val barId: barId = BarId(1)
 
-  def passPrimitiveToTypeAlias(p : funId) = p
-}
+acceptsAlias(FunId(1))
+//  acceptsAlias(barId) [ fails because barId is not a fooId even though they are both int ]
+acceptsAlias(funId)
+
+def acceptsAlias(funId: funId) = funId
 ```
 
 ## Zsh completion
@@ -160,3 +141,4 @@ _arguments -s $arguments
 Drop this into your zsh functions folder as `_tiny-types` and you're good to go!
 
 
+ 
