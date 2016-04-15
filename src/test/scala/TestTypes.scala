@@ -8,14 +8,14 @@ class UseTypes {
 
   import com.devshorts.data.typetag2.TinyType._
 
-  val f: funId = FunId(1)
-  val b: barId = BarId(1)
+  val funId: funId = FunId(1)
+  val barId: barId = BarId(1)
 
   acceptsAlias(FunId(1))
-//  acceptsAlias(b) // should fail
-  acceptsAlias(f)
+//  acceptsAlias(barId) [ fails because barId is not a fooId even though they are both int ]
+  acceptsAlias(funId)
 
-  def acceptsAlias(p: funId) = p
+  def acceptsAlias(funId: funId) = funId
 }
 
 class TestTypes extends FlatSpec with Matchers {
