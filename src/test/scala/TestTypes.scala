@@ -8,13 +8,14 @@ class UseTypes {
 
   import com.devshorts.data.typetag2.TinyType._
 
-  val implicitConvertsToType: funId = 1
+  val f: funId = FunId(1)
+  val b: barId = BarId(1)
 
-  def sendPrimitiveToTypeAlias = passPrimitiveToTypeAlias(1)
+  acceptsAlias(FunId(1))
+//  acceptsAlias(b) // should fail
+  acceptsAlias(f)
 
-  def sendTypeAliasToTypeAlias = passPrimitiveToTypeAlias(implicitConvertsToType)
-
-  def passPrimitiveToTypeAlias(p: funId) = p
+  def acceptsAlias(p: funId) = p
 }
 
 class TestTypes extends FlatSpec with Matchers {
