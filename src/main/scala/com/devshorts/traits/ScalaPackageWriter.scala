@@ -7,6 +7,8 @@ trait ScalaPackageWriter extends Output {
 
   val packageName: String
 
+  val fileHeader = ""
+
   def write(content: String, fileName: String): Unit = {
     val dir = s"$folder/${packageName.replace('.', '/')}"
 
@@ -20,7 +22,8 @@ trait ScalaPackageWriter extends Output {
 
     println(s"Writing to ${f.getAbsolutePath}")
 
-    writer.write( s"""package $packageName
+    writer.write( s"""${fileHeader}
+package $packageName
 
 $content""")
 

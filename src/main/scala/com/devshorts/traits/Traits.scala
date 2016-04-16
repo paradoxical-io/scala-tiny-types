@@ -1,7 +1,5 @@
 package com.devshorts.traits
 
-import java.io.{BufferedWriter, File, FileWriter}
-
 import scala.io.{Codec, Source}
 
 trait Input {

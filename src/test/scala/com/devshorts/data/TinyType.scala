@@ -1,3 +1,4 @@
+
 package com.devshorts.data
 
 case class bar(data : String) extends AnyVal

@@ -1,3 +1,9 @@
+//
+// TinyType.scala
+//
+// Copyright (c) 2016 by Devshorts, Inc.
+//
+
 package com.devshorts.data.typetag2
 
 object TinyType {
