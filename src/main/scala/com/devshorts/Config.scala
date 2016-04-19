@@ -21,7 +21,8 @@ case class TypeGroup(
   creationType: TypeAliasType.Value = TypeAliasType.CaseClass,
   folder: String,
   types: Seq[TinyTypeDefinition],
-  fileHeader: Option[String]
+  fileHeader: Option[String],
+  generateImplicits: Option[Boolean]
 )
 
 case class RawConfig(
@@ -30,7 +31,8 @@ case class RawConfig(
   @JsonProperty("format") creationType: String,
   folder: String,
   tiny: Map[String, String],
-  fileHeader: Option[String]
+  fileHeader: Option[String],
+  generateImplicits: Option[Boolean]
 )
 
 object Config {
@@ -50,7 +52,8 @@ object Config {
           creationType = if (x.creationType == null) TypeAliasType.CaseClass else TypeAliasType.withName(x.creationType),
           folder = x.folder,
           types = x.tiny.map(parseTypeDefinitions) toList,
-          fileHeader = x.fileHeader
+          fileHeader = x.fileHeader,
+          generateImplicits = x.generateImplicits
         )
       )
 

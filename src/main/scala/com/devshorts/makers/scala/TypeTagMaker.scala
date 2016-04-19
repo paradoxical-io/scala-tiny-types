@@ -13,24 +13,30 @@ abstract class TypeTagMaker(config: TypeGroup) extends TinyMaker with OutputProv
   def ${toFirstUpper(definition.tinyName)}(rawType: ${definition.typeName}): ${definition.tinyName} = rawType.asInstanceOf[${definition.tinyName}]"""
   }
 
+  private def toImplicits(definition: TinyTypeDefinition): String = {
+    s"""
+  implicit def convertTo${toFirstUpper(definition.tinyName)}(rawType: ${definition.typeName}): ${definition.tinyName} = rawType.asInstanceOf[${definition.tinyName}]"""
+  }
+
   private def toFirstUpper(s: String) = s.charAt(0).toString.toUpperCase() + s.substring(1, s.length)
 
-  private def getFileHeader(config: TypeGroup): String = {
+  private def getFileHeader(config: TypeGroup, fileName: String): String = {
     config.fileHeader match {
       case Some(template) =>
         template.
-          replace("${fileName}", config.className).
+          replace("${fileName}", fileName).
           replace("${year}", new SimpleDateFormat("yyyy").format(Calendar.getInstance().getTime))
       case None => ""
     }
   }
 
   override def getWriter(): Writer = new Writer {
-    override def write(): Unit = {
+
+    def writeBody(): Unit = {
       val provider: Output = new ScalaPackageWriter {
         override val folder: String = config.folder
         override val packageName: String = config.packageName
-        override val fileHeader: String = getFileHeader(config)
+        override val fileHeader: String = getFileHeader(config, config.className)
       }
 
       val types: String = config.types.map(toTemplate).mkString(System.lineSeparator())
@@ -44,6 +50,36 @@ object ${config.className} {
         """.trim
 
       provider.write(body, s"${config.className}.scala")
+    }
+
+    def writeImplicits() = {
+
+      val className = s"${config.className}Implicits"
+      val provider: Output = new ScalaPackageWriter {
+        override val folder: String = config.folder
+        override val packageName: String = config.packageName
+        override val fileHeader: String = getFileHeader(config, className)
+      }
+
+      val types: String = config.types.map(toImplicits).mkString(System.lineSeparator())
+
+      val body =
+        s"""
+import ${config.packageName}.${config.className}._
+object ${className} {
+  $types
+}
+        """.trim
+
+      provider.write(body, s"${className}.scala")
+    }
+
+    override def write(): Unit = {
+      writeBody()
+
+      if (config.generateImplicits.isDefined) {
+        writeImplicits()
+      }
     }
   }
 }
