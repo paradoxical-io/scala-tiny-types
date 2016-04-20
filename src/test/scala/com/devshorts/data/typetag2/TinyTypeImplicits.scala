@@ -11,11 +11,12 @@ package com.devshorts.data.typetag2
 import com.devshorts.data.typetag2.TinyType._
 object TinyTypeImplicits {
   
-  implicit def convertToWorkId(rawType: String): workId = rawType.asInstanceOf[workId]
+    implicit def convertToWorkId(rawType: String): workId = rawType.asInstanceOf[workId]
 
-  implicit def convertToFunId(rawType: Int): funId = rawType.asInstanceOf[funId]
+    implicit def convertToFunId(rawType: Int): funId = rawType.asInstanceOf[funId]
 
-  implicit def convertToBarId(rawType: Int): barId = rawType.asInstanceOf[barId]
+    implicit def convertToBarId(rawType: Int): barId = rawType.asInstanceOf[barId]
+    implicit def convertToBarId(rawType: Integer): barId = rawType.asInstanceOf[barId]
 
-  implicit def convertToTableId(rawType: java.util.UUID): tableId = rawType.asInstanceOf[tableId]
+    implicit def convertToTableId(rawType: java.util.UUID): tableId = rawType.asInstanceOf[tableId]
 }

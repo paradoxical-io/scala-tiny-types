@@ -20,8 +20,8 @@ object TinyType {
   def FunId(rawType: Int): funId = rawType.asInstanceOf[funId]
 
   trait TinyBarId
-  type barId = Int with Tagged[TinyBarId]
-  def BarId(rawType: Int): barId = rawType.asInstanceOf[barId]
+  type barId = Integer with Tagged[TinyBarId]
+  def BarId(rawType: Integer): barId = rawType.asInstanceOf[barId]
 
   trait TinyTableId
   type tableId = java.util.UUID with Tagged[TinyTableId]

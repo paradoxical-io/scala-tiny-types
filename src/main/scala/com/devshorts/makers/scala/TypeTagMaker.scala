@@ -14,8 +14,19 @@ abstract class TypeTagMaker(config: TypeGroup) extends TinyMaker with OutputProv
   }
 
   private def toImplicits(definition: TinyTypeDefinition): String = {
-    s"""
-  implicit def convertTo${toFirstUpper(definition.tinyName)}(rawType: ${definition.typeName}): ${definition.tinyName} = rawType.asInstanceOf[${definition.tinyName}]"""
+    val mainImplicit =
+      s"""
+    implicit def convertTo${toFirstUpper(definition.tinyName)}(rawType: ${definition.typeName}): ${definition.tinyName} = rawType.asInstanceOf[${definition.tinyName}]"""
+
+    definition.typeName match {
+      case "Integer" =>
+        s"""
+    implicit def convertTo${toFirstUpper(definition.tinyName)}(rawType: Int): ${definition.tinyName} = rawType.asInstanceOf[${definition.tinyName}]""" +
+        mainImplicit
+
+      case _ =>
+        mainImplicit
+    }
   }
 
   private def toFirstUpper(s: String) = s.charAt(0).toString.toUpperCase() + s.substring(1, s.length)

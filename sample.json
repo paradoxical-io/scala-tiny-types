@@ -17,7 +17,7 @@
     "tiny": {
       "workId": "String",
       "funId": "Int",
-      "barId": "Int",
+      "barId": "Integer",
       "tableId": "java.util.UUID"
     },
     "generateImplicits": true
