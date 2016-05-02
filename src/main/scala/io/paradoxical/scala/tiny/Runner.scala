@@ -1,7 +1,7 @@
-package com.devshorts
+package io.paradoxical.scala.tiny
 
-import com.devshorts.providers.MakerProvider
-import com.devshorts.traits.Input
+import io.paradoxical.scala.tiny.providers.MakerProvider
+import io.paradoxical.scala.tiny.traits.Input
 
 abstract class Runner(config: Seq[TypeGroup]) extends Input {
 

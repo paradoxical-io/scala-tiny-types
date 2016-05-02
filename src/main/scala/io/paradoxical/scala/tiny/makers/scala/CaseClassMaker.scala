@@ -1,7 +1,8 @@
-package com.devshorts.makers.scala
+package io.paradoxical.scala.tiny.makers.scala
 
-import com.devshorts._
-import com.devshorts.traits._
+import io.paradoxical.scala.tiny._
+import io.paradoxical.scala.tiny.{TinyTypeDefinition, TypeGroup}
+import io.paradoxical.scala.tiny.traits._
 
 
 case class ParsedTinyType(caseClass: String, conversion: String)

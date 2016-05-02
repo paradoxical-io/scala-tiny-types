@@ -1,4 +1,5 @@
-import com.devshorts.data.bar
+import io.paradoxical.{Conversions, bar}
+import io.paradoxical.data.typetag2.TinyType
 import org.scalatest.{FlatSpec, Matchers}
 
 /**
@@ -6,7 +7,7 @@ import org.scalatest.{FlatSpec, Matchers}
   */
 class UseTypes {
 
-  import com.devshorts.data.typetag2.TinyType._
+  import TinyType._
 
   val funId: funId = FunId(1)
   val barId: barId = BarId(1)
@@ -20,7 +21,7 @@ class UseTypes {
 
 class TestTypes extends FlatSpec with Matchers {
   "A tiny type" should "be convertable" in {
-    import com.devshorts.data.Conversions._
+    import Conversions._
 
     val tinyBar: bar = bar("foo")
 
@@ -30,7 +31,7 @@ class TestTypes extends FlatSpec with Matchers {
   }
 
   "A tiny type" should "be assignable" in {
-    import com.devshorts.data.Conversions._
+    import Conversions._
 
     val tinyBar = bar("foo")
 

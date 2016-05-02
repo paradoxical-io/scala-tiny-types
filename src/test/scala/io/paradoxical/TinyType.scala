@@ -1,5 +1,5 @@
 
-package com.devshorts.data
+package io.paradoxical
 
 case class bar(data : String) extends AnyVal
 case class foo(data : String) extends AnyVal

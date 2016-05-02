@@ -34,7 +34,7 @@ As an example, given the following input file
 ```
 [
   {
-    "package": "com.devshorts.data",
+    "package": "io.paradoxical.scala.tiny.data",
     "folder": "src/test/scala",
     "tiny": {
       "bar": "String",
@@ -49,7 +49,7 @@ As an example, given the following input file
 We'll get 
 
 ```scala
-package com.devshorts.data
+package io.paradoxical.scala.tiny.data
 
 case class bar(data : String) extends AnyVal
 case class foo(data : String) extends AnyVal
@@ -71,7 +71,7 @@ With the following input file
 ```
 [
   {
-    "package": "com.devshorts.data.typetag2",
+    "package": "io.paradoxical.scala.tiny.data.typetag2",
     "folder": "src/test/scala",
     "format": "TypeTag",
     "tiny": {
@@ -87,7 +87,7 @@ With the following input file
 We'll get
 
 ```scala
-package com.devshorts.data.typetag2
+package io.paradoxical.scala.tiny.data.typetag2
 object TinyType {
   type Tagged[U] = { type Tag = U }
 
@@ -112,7 +112,7 @@ object TinyType {
 Which can be used now:
 
 ```scala
-import com.devshorts.data.typetag2.TinyType._
+import io.paradoxical.scala.tiny.data.typetag2.TinyType._
 
 val funId: funId = FunId(1)
 val barId: barId = BarId(1)

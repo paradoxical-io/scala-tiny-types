@@ -1,8 +1,7 @@
-package com.devshorts
+package io.paradoxical.scala.tiny
 
-import java.io.{File, FileInputStream, StringReader}
-
-import com.devshorts.traits.LiveReader
+import io.paradoxical.scala.tiny.traits.LiveReader
+import java.io.FileInputStream
 
 case class ProgramArguments(definitionsFile : String = null)
 

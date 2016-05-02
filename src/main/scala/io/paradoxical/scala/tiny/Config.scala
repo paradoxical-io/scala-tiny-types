@@ -1,11 +1,10 @@
-package com.devshorts
-
-import java.io.InputStream
+package io.paradoxical.scala.tiny
 
 import com.fasterxml.jackson.annotation.JsonProperty
 import com.fasterxml.jackson.core.`type`.TypeReference
 import com.fasterxml.jackson.databind.{DeserializationFeature, ObjectMapper}
 import com.fasterxml.jackson.module.scala.DefaultScalaModule
+import java.io.InputStream
 
 object TypeAliasType extends Enumeration {
   val CaseClass, TypeTag = Value

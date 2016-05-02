@@ -1,4 +1,4 @@
-package com.devshorts.traits
+package io.paradoxical.scala.tiny.traits
 
 import java.io.{BufferedWriter, File, FileWriter}
 

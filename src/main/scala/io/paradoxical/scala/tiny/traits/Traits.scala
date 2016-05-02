@@ -1,4 +1,4 @@
-package com.devshorts.traits
+package io.paradoxical.scala.tiny.traits
 
 import scala.io.{Codec, Source}
 
