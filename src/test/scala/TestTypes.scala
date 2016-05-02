@@ -1,16 +1,18 @@
 import io.paradoxical.{Conversions, bar}
-import io.paradoxical.data.typetag2.TinyType
+import io.paradoxical.scala.tiny.data.typetag2.TinyType._
 import org.scalatest.{FlatSpec, Matchers}
+
+case class TestCase(data: funId)
 
 /**
   * Tests only for compilation
   */
 class UseTypes {
 
-  import TinyType._
-
   val funId: funId = FunId(1)
   val barId: barId = BarId(1)
+
+  val longId:Long = LongId(1)
 
   acceptsAlias(FunId(1))
 //  acceptsAlias(barId) [ fails because barId is not a fooId even though they are both int ]

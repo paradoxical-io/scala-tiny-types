@@ -1,7 +1,6 @@
 package io.paradoxical.scala.tiny.makers.scala
 
 import io.paradoxical.scala.tiny.traits.{Output, OutputProvider, ScalaPackageWriter, TinyMaker, Writer}
-import io.paradoxical.scala.tiny.TypeGroup
 import io.paradoxical.scala.tiny.{TinyTypeDefinition, TypeGroup}
 import java.text.SimpleDateFormat
 import java.util.Calendar

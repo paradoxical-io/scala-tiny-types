@@ -18,6 +18,7 @@
       "workId": "String",
       "funId": "Int",
       "barId": "Integer",
+      "longId": "Long",
       "tableId": "java.util.UUID"
     },
     "generateImplicits": true

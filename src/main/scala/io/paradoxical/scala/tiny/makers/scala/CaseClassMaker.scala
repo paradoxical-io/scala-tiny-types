@@ -1,8 +1,7 @@
 package io.paradoxical.scala.tiny.makers.scala
 
-import io.paradoxical.scala.tiny._
-import io.paradoxical.scala.tiny.{TinyTypeDefinition, TypeGroup}
 import io.paradoxical.scala.tiny.traits._
+import io.paradoxical.scala.tiny.{TinyTypeDefinition, TypeGroup}
 
 
 case class ParsedTinyType(caseClass: String, conversion: String)
@@ -13,7 +12,10 @@ object CaseClassMaker {
       case TinyTypeDefinition(tinyName, typeName) =>
 
         val definition = s"case class $tinyName(data : $typeName) extends AnyVal"
-        val conversion = s"implicit def convert${tinyName}(i : $tinyName) : $typeName = i.data"
+        val conversion =
+          s"""
+             |implicit def convert${tinyName}(i : $tinyName) : $typeName = i.data
+             |implicit def convertOption${tinyName}(i : Option[$tinyName]) : Option[$typeName] = i.map(_.data)""".stripMargin
 
         ParsedTinyType(definition, conversion)
     }
@@ -33,7 +35,8 @@ abstract class CaseClassMaker(config: TypeGroup) extends TinyMaker with OutputPr
       override def write(): Unit = {
         val writer = getOutputProvider()
 
-        writer.write(s"""
+        writer.write(
+          s"""
 $tinyTemplates
 
 $tinyConversions
