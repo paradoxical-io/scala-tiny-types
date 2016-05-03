@@ -11,6 +11,12 @@ Run `tiny-types` and give it the path to the defintions file (which is just a co
 and the output package type of the form "com.foo.bar".  It will write two files into "src/main/scala/com/foo/bar" being the case class tiny 
 definitions as well as the implicit conversions.
 
+## Install
+
+```
+"io.paradoxical" %% "tiny-types" % "1.1"
+```
+
 ## Usage
 
 ```
