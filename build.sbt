@@ -12,6 +12,8 @@ resolvers += Resolver.sonatypeRepo("public")
 
 crossScalaVersions := Seq("2.10.0", "2.11.0")
 
+publishTo := Some(Resolver.file("file",  new File(Path.userHome.absolutePath+"/.m2/repository")))
+
 libraryDependencies ++= Seq {
   "com.github.scopt" %% "scopt" % "3.3.0"
 }

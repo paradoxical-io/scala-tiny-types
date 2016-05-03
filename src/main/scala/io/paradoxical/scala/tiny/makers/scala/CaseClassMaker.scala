@@ -61,14 +61,14 @@ $toTinyConversion
 
   def withConversionsFromTiny(content: String) = {
     s"""
-object ConversionBox{
+object ConversionUnbox{
 ${content.split(System.lineSeparator()).map(i => "    " + i.trim).mkString(System.lineSeparator())}
 }""".trim
   }
 
   def withConversionsToTinyType(content: String) = {
     s"""
-object ConversionUnbox{
+object ConversionBox{
 ${content.split(System.lineSeparator()).map(i => "    " + i.trim).mkString(System.lineSeparator())}
 }""".trim
   }
