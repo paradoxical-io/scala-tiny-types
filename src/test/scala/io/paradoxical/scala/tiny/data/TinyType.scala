@@ -1,27 +1,27 @@
 
 package io.paradoxical.scala.tiny.data
 
-case class bar(data : String) extends AnyVal
-case class foo(data : String) extends AnyVal
-case class bizBaz(data : Int) extends AnyVal
-case class Data(data : java.util.UUID) extends AnyVal
-
-object ConversionBox{
-    
-    implicit def unboxBar(i : bar) : String = i.data
-    implicit def unboxBar(i : Option[bar]) : Option[String] = i.map(_.data)
-    
-    implicit def unboxFoo(i : foo) : String = i.data
-    implicit def unboxFoo(i : Option[foo]) : Option[String] = i.map(_.data)
-    
-    implicit def unboxBizBaz(i : bizBaz) : Int = i.data
-    implicit def unboxBizBaz(i : Option[bizBaz]) : Option[Int] = i.map(_.data)
-    
-    implicit def unboxData(i : Data) : java.util.UUID = i.data
-    implicit def unboxData(i : Option[Data]) : Option[java.util.UUID] = i.map(_.data)
-}
+case class bar(value: String) extends AnyVal
+case class foo(value: String) extends AnyVal
+case class bizBaz(value: Int) extends AnyVal
+case class Data(value: java.util.UUID) extends AnyVal
 
 object ConversionUnbox{
+    
+    implicit def unboxBar(i : bar) : String = i.value
+    implicit def unboxBar(i : Option[bar]) : Option[String] = i.map(_.value)
+    
+    implicit def unboxFoo(i : foo) : String = i.value
+    implicit def unboxFoo(i : Option[foo]) : Option[String] = i.map(_.value)
+    
+    implicit def unboxBizBaz(i : bizBaz) : Int = i.value
+    implicit def unboxBizBaz(i : Option[bizBaz]) : Option[Int] = i.map(_.value)
+    
+    implicit def unboxData(i : Data) : java.util.UUID = i.value
+    implicit def unboxData(i : Option[Data]) : Option[java.util.UUID] = i.map(_.value)
+}
+
+object ConversionBox{
     
     implicit def boxBar(i : String) : bar = bar(i)
     implicit def boxBar(i : Option[String]) : Option[bar] = i.map(bar(_))

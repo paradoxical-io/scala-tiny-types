@@ -9,16 +9,16 @@ case class ParsedTinyType(caseClass: String, fromTiny: String, toTiny: String)
 object CaseClassMaker {
   def process(d: TinyTypeDefinition): ParsedTinyType = {
     d match {
-      case TinyTypeDefinition(tinyName, typeName) =>
+      case TinyTypeDefinition(tinyName, typeName, extractionName) =>
 
-        val definition = s"case class $tinyName(data : $typeName) extends AnyVal"
+        val definition = s"case class $tinyName(${extractionName}: $typeName) extends AnyVal"
 
         val tinyTitleName = tinyName(0).toUpper + tinyName.drop(1)
 
         val fromTiny =
           s"""
-             |implicit def unbox${tinyTitleName}(i : $tinyName) : $typeName = i.data
-             |implicit def unbox${tinyTitleName}(i : Option[$tinyName]) : Option[$typeName] = i.map(_.data)""".stripMargin
+             |implicit def unbox${tinyTitleName}(i : $tinyName) : $typeName = i.${extractionName}
+             |implicit def unbox${tinyTitleName}(i : Option[$tinyName]) : Option[$typeName] = i.map(_.${extractionName})""".stripMargin
 
         val toTiny =
           s"""
