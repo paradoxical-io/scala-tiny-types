@@ -10,7 +10,7 @@ object TypeAliasType extends Enumeration {
   val CaseClass, TypeTag = Value
 }
 
-case class TinyTypeDefinition(tinyName: String, typeName: String, extractionName: String = "value")
+case class TinyTypeDefinition(tinyName: String, typeName: String, extractionName: String = "value", canBeAnyVal: Boolean = true)
 
 case class Config(typeGroups: Seq[TypeGroup])
 
@@ -32,6 +32,7 @@ case class RawConfig(
   tiny: Map[String, String],
   fileHeader: Option[String],
   extractionName: Option[String],
+  enableAnyVal: Option[Boolean],
   generateImplicits: Option[Boolean]
 )
 
@@ -51,7 +52,7 @@ object Config {
           className = if (x.className == null) "TinyType" else x.className,
           creationType = if (x.creationType == null) TypeAliasType.CaseClass else TypeAliasType.withName(x.creationType),
           folder = x.folder,
-          types = x.tiny.map(m => parseTypeDefinitions(m, x.extractionName.getOrElse("value"))) toList,
+          types = x.tiny.map(m => parseTypeDefinitions(m, x.extractionName.getOrElse("value"), x.enableAnyVal.getOrElse(true))) toList,
           fileHeader = x.fileHeader,
           generateImplicits = x.generateImplicits
         )
@@ -60,8 +61,8 @@ object Config {
     Config(typeGroups)
   }
 
-  private def parseTypeDefinitions(entry: (String, String), extractionName: String): TinyTypeDefinition =
+  private def parseTypeDefinitions(entry: (String, String), extractionName: String, canBeAnyVal: Boolean): TinyTypeDefinition =
     entry match {
-      case (key, value) => new TinyTypeDefinition(key, value, extractionName)
+      case (key, value) => new TinyTypeDefinition(key, value, extractionName, canBeAnyVal = canBeAnyVal)
     }
 }

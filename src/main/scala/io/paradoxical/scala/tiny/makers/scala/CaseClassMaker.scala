@@ -9,9 +9,9 @@ case class ParsedTinyType(caseClass: String, fromTiny: String, toTiny: String)
 object CaseClassMaker {
   def process(d: TinyTypeDefinition): ParsedTinyType = {
     d match {
-      case TinyTypeDefinition(tinyName, typeName, extractionName) =>
+      case TinyTypeDefinition(tinyName, typeName, extractionName, canBeAnyVal) =>
 
-        val definition = s"case class $tinyName(${extractionName}: $typeName) extends AnyVal"
+        val definition = s"case class $tinyName(${extractionName}: $typeName)" + (if (canBeAnyVal) "extends AnyVal" else "")
 
         val tinyTitleName = tinyName(0).toUpper + tinyName.drop(1)
 

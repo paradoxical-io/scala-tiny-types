@@ -4,7 +4,7 @@ name := "tiny-types"
 
 organization := "io.paradoxical"
 
-version := "1.2"
+version := "1.3"
 
 scalaVersion := "2.11.5"
 

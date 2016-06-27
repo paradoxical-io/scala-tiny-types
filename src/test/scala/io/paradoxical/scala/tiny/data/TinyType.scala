@@ -1,10 +1,10 @@
 
 package io.paradoxical.scala.tiny.data
 
-case class bar(value: String) extends AnyVal
-case class foo(value: String) extends AnyVal
-case class bizBaz(value: Int) extends AnyVal
-case class Data(value: java.util.UUID) extends AnyVal
+case class bar(value: String)extends AnyVal
+case class foo(value: String)extends AnyVal
+case class bizBaz(value: Int)extends AnyVal
+case class Data(value: java.util.UUID)extends AnyVal
 
 object ConversionUnbox{
     
