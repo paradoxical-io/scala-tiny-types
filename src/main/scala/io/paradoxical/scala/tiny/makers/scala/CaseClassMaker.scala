@@ -18,7 +18,7 @@ object CaseClassMaker {
         }
 
         val classAnnotations = if (genJackson) {
-          "@JsonCreator(mode=JsonCreator.Mode.DELEGATING)"
+          " @JsonCreator(mode=JsonCreator.Mode.DELEGATING)"
         } else {
           ""
         }
@@ -38,7 +38,7 @@ object CaseClassMaker {
 
         ParsedTinyType(definition, fromTiny, toTiny, imports = if (genJackson) {
           Seq("import com.fasterxml.jackson.annotation.{JsonCreator, JsonValue}",
-            "import scala.annotation.meta.{getter, setter}")
+            "import scala.annotation.meta.{getter}")
         } else {
           Seq()
         })

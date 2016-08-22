@@ -15,7 +15,7 @@ case class TinyTypeDefinition(
   typeName: String,
   extractionName: String = "value",
   canBeAnyVal: Boolean = true,
-  generateJacksonAnnotation: Boolean = false
+  generateJacksonAnnotation: Boolean = true
 )
 
 case class Config(typeGroups: Seq[TypeGroup])

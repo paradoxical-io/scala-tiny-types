@@ -1,12 +1,12 @@
 
 package io.paradoxical.scala.tiny.data
 
-import com.fasterxml.jackson.annotation.JsonValue
-import scala.annotation.meta.getter
-case class bar(@(JsonValue @getter) value: String) extends AnyVal
-case class foo(@(JsonValue @getter) value: String) extends AnyVal
-case class bizBaz(@(JsonValue @getter) value: Int) extends AnyVal
-case class Data(@(JsonValue @getter) value: java.util.UUID) extends AnyVal
+import com.fasterxml.jackson.annotation.{JsonCreator, JsonValue}
+import scala.annotation.meta.{getter, setter}
+case class bar @JsonCreator(mode=JsonCreator.Mode.DELEGATING)(@(JsonValue @getter) value: String) extends AnyVal
+case class foo @JsonCreator(mode=JsonCreator.Mode.DELEGATING)(@(JsonValue @getter) value: String) extends AnyVal
+case class bizBaz @JsonCreator(mode=JsonCreator.Mode.DELEGATING)(@(JsonValue @getter) value: Int) extends AnyVal
+case class Data @JsonCreator(mode=JsonCreator.Mode.DELEGATING)(@(JsonValue @getter) value: java.util.UUID) extends AnyVal
 
 object ConversionUnbox{
     
