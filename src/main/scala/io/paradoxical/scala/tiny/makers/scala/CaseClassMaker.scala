@@ -4,14 +4,20 @@ import io.paradoxical.scala.tiny.traits._
 import io.paradoxical.scala.tiny.{TinyTypeDefinition, TypeGroup}
 
 
-case class ParsedTinyType(caseClass: String, fromTiny: String, toTiny: String)
+case class ParsedTinyType(caseClass: String, fromTiny: String, toTiny: String, imports: Seq[String] = Seq())
 
 object CaseClassMaker {
   def process(d: TinyTypeDefinition): ParsedTinyType = {
     d match {
-      case TinyTypeDefinition(tinyName, typeName, extractionName, canBeAnyVal) =>
+      case TinyTypeDefinition(tinyName, typeName, extractionName, canBeAnyVal, genJackson) =>
 
-        val definition = s"case class $tinyName(${extractionName}: $typeName)" + (if (canBeAnyVal) "extends AnyVal" else "")
+        val annotations = if (genJackson) {
+          "@(JsonValue @getter) "
+        } else {
+          ""
+        }
+
+        val definition = s"case class $tinyName(${annotations}${extractionName}: $typeName) " + (if (canBeAnyVal) "extends AnyVal" else "")
 
         val tinyTitleName = tinyName(0).toUpper + tinyName.drop(1)
 
@@ -25,7 +31,12 @@ object CaseClassMaker {
              |implicit def box${tinyTitleName}(i : $typeName) : $tinyName = $tinyName(i)
              |implicit def box${tinyTitleName}(i : Option[$typeName]) : Option[$tinyName] = i.map($tinyName(_))""".stripMargin
 
-        ParsedTinyType(definition, fromTiny, toTiny)
+        ParsedTinyType(definition, fromTiny, toTiny, imports = if (genJackson) {
+          Seq("import com.fasterxml.jackson.annotation.JsonValue",
+            "import scala.annotation.meta.getter")
+        } else {
+          Seq()
+        })
     }
   }
 }
@@ -34,6 +45,8 @@ abstract class CaseClassMaker(config: TypeGroup) extends TinyMaker with OutputPr
 
   def getWriter(): Writer = {
     val parsed: Seq[ParsedTinyType] = config.types.map(CaseClassMaker.process)
+
+    val imports = parsed.flatMap(_.imports).distinct.mkString(System.lineSeparator())
 
     val tinyTemplates = parsed.map(_.caseClass).mkString(System.lineSeparator())
 
@@ -49,6 +62,7 @@ abstract class CaseClassMaker(config: TypeGroup) extends TinyMaker with OutputPr
 
         writer.write(
           s"""
+$imports
 $tinyTemplates
 
 $tinyConversions

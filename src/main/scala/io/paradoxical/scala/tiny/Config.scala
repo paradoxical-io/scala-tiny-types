@@ -10,7 +10,13 @@ object TypeAliasType extends Enumeration {
   val CaseClass, TypeTag = Value
 }
 
-case class TinyTypeDefinition(tinyName: String, typeName: String, extractionName: String = "value", canBeAnyVal: Boolean = true)
+case class TinyTypeDefinition(
+  tinyName: String,
+  typeName: String,
+  extractionName: String = "value",
+  canBeAnyVal: Boolean = true,
+  generateJacksonAnnotation: Boolean = false
+)
 
 case class Config(typeGroups: Seq[TypeGroup])
 
