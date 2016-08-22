@@ -11,13 +11,18 @@ object CaseClassMaker {
     d match {
       case TinyTypeDefinition(tinyName, typeName, extractionName, canBeAnyVal, genJackson) =>
 
-        val annotations = if (genJackson) {
+        val fieldAnnotations = if (genJackson) {
           "@(JsonValue @getter) "
         } else {
           ""
         }
 
-        val definition = s"case class $tinyName(${annotations}${extractionName}: $typeName) " + (if (canBeAnyVal) "extends AnyVal" else "")
+        val classAnnotations = if (genJackson) {
+          "@JsonCreator(mode=JsonCreator.Mode.DELEGATING)"
+        } else {
+          ""
+        }
+        val definition = s"case class ${tinyName}${classAnnotations}(${fieldAnnotations}${extractionName}: $typeName) " + (if (canBeAnyVal) "extends AnyVal" else "")
 
         val tinyTitleName = tinyName(0).toUpper + tinyName.drop(1)
 
@@ -32,8 +37,8 @@ object CaseClassMaker {
              |implicit def box${tinyTitleName}(i : Option[$typeName]) : Option[$tinyName] = i.map($tinyName(_))""".stripMargin
 
         ParsedTinyType(definition, fromTiny, toTiny, imports = if (genJackson) {
-          Seq("import com.fasterxml.jackson.annotation.JsonValue",
-            "import scala.annotation.meta.getter")
+          Seq("import com.fasterxml.jackson.annotation.{JsonCreator, JsonValue}",
+            "import scala.annotation.meta.{getter, setter}")
         } else {
           Seq()
         })
