@@ -1,0 +1,18 @@
+implicit val buildTo${TinyTypeTileName}: CanBuildFrom[${SourceType}, ${SourceType}, ${TinyType}] = new CanBuildFrom[${SourceType}, ${SourceType}, ${TinyType}] {
+    override def apply(from: ${SourceType}): mutable.Builder[${SourceType}, ${TinyType}] = builder += from
+
+    override def apply(): mutable.Builder[${SourceType}, ${TinyType}] = builder
+
+    def builder: mutable.Builder[${SourceType}, ${TinyType}] = new mutable.Builder[${SourceType}, ${TinyType}] {
+        var e: ${SourceType} = _
+        override def += (elem: ${SourceType}): this.type = {
+            e = elem
+
+            this
+        }
+
+        override def clear(): Unit = {}
+
+        override def result(): ${TinyType} = ${TinyType}(e)
+    }
+}

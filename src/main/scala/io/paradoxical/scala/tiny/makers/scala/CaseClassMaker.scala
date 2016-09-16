@@ -1,7 +1,7 @@
 package io.paradoxical.scala.tiny.makers.scala
 
 import io.paradoxical.scala.tiny.traits._
-import io.paradoxical.scala.tiny.{TinyTypeDefinition, TypeGroup}
+import io.paradoxical.scala.tiny.{Templator, TinyTypeDefinition, TypeGroup}
 
 
 case class ParsedTinyType(caseClass: String, fromTiny: String, toTiny: String, imports: Seq[String] = Seq())
@@ -26,21 +26,39 @@ object CaseClassMaker {
 
         val tinyTitleName = tinyName(0).toUpper + tinyName.drop(1)
 
+        val canBuildToTiny = Templator("CanBuildToTiny.vm", Map(
+          "SourceType" -> typeName,
+          "TinyTypeTileName" -> tinyTitleName,
+          "TinyType" -> tinyName
+        ))
+
+        val canBuildToValueType = Templator("CanBuildFromTiny.vm", Map(
+          "SourceType" -> typeName,
+          "TinyTypeTileName" -> tinyTitleName,
+          "TinyType" -> tinyName,
+          "extractor" -> extractionName
+        ))
+
         val fromTiny =
           s"""
+      ${canBuildToValueType}
              |implicit def unbox${tinyTitleName}(i : $tinyName) : $typeName = i.${extractionName}
              |implicit def unbox${tinyTitleName}(i : Option[$tinyName]) : Option[$typeName] = i.map(_.${extractionName})""".stripMargin
 
         val toTiny =
           s"""
+      ${canBuildToTiny}
              |implicit def box${tinyTitleName}(i : $typeName) : $tinyName = $tinyName(i)
              |implicit def box${tinyTitleName}(i : Option[$typeName]) : Option[$tinyName] = i.map($tinyName(_))""".stripMargin
 
         ParsedTinyType(definition, fromTiny, toTiny, imports = if (genJackson) {
           Seq("import com.fasterxml.jackson.annotation.{JsonCreator, JsonValue}",
-            "import scala.annotation.meta.{getter}")
+            "import scala.annotation.meta.{getter}",
+            "import scala.collection.generic.CanBuildFrom",
+            "import scala.collection.mutable"
+          )
         } else {
-          Seq()
+          Seq("import scala.collection.generic.CanBuildFrom", "import scala.collection.mutable")
         })
     }
   }
